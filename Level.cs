@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TRexRunnerGame
 {
-    interface IStrategy
+    class Level : IStrategy
     {
 
     }
