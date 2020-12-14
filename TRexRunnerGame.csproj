@@ -43,16 +43,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirstLevel.cs" />
-    <Compile Include="Game.cs" />
-    <Compile Include="Graphics\GraphicsComponent.cs" />
-    <Compile Include="IStrategy.cs" />
-    <Compile Include="Level.cs" />
+    <Compile Include="Composite\Composite.cs" />
+    <Compile Include="Composite\Dynamic.cs" />
+    <Compile Include="Composite\IComponent.cs" />
+    <Compile Include="Composite\Leaf.cs" />
+    <Compile Include="Composite\Static.cs" />
+    <Compile Include="Entities\Bird.cs" />
+    <Compile Include="Entities\Cactus.cs" />
+    <Compile Include="Entities\Cloud.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Ground.cs" />
+    <Compile Include="Entities\TRrex.cs" />
+    <Compile Include="Game\Score\IMediator.cs" />
+    <Compile Include="Game\Score\IObserver.cs" />
+    <Compile Include="Game\Score\IScore.cs" />
+    <Compile Include="Game\Score\Mediator.cs" />
+    <Compile Include="Game\Score\Score.cs" />
+    <Compile Include="Game\Startegy\FirstLevel.cs" />
+    <Compile Include="Game\Game.cs" />
+    <Compile Include="Entities\States\States.cs" />
+    <Compile Include="Graphics\IGraphicsComponent.cs" />
+    <Compile Include="Input\IInputComponent.cs" />
+    <Compile Include="Game\Startegy\IStrategy.cs" />
+    <Compile Include="Game\Startegy\Level.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="obj\Release\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
+    <Compile Include="Physics\IPhysicsComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SecondLevel.cs" />
+    <Compile Include="Game\Startegy\SecondLevel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
