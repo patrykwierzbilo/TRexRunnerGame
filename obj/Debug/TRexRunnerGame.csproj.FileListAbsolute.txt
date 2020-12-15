@@ -1,7 +1,0 @@
-C:\Users\patry\Desktop\TRexRunnerGame\bin\Debug\TRexRunnerGame.exe.config
-C:\Users\patry\Desktop\TRexRunnerGame\bin\Debug\TRexRunnerGame.exe
-C:\Users\patry\Desktop\TRexRunnerGame\bin\Debug\TRexRunnerGame.pdb
-C:\Users\patry\Desktop\TRexRunnerGame\obj\Debug\TRexRunnerGame.csproj.CoreCompileInputs.cache
-C:\Users\patry\Desktop\TRexRunnerGame\obj\Debug\TRexRunnerGame.exe
-C:\Users\patry\Desktop\TRexRunnerGame\obj\Debug\TRexRunnerGame.pdb
-C:\Users\patry\Desktop\TRexRunnerGame\obj\Debug\TRexRunnerGame.csprojAssemblyReference.cache
