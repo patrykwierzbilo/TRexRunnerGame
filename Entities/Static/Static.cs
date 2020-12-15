@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TRexRunnerGame.Entities
+namespace TRexRunnerGame.Entities.Static
 {
-    class Cloud : Composite.Leaf
+    class Static : Entity
     {
     }
 }

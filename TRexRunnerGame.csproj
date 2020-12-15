@@ -48,12 +48,14 @@
     <Compile Include="Composite\IComponent.cs" />
     <Compile Include="Composite\Leaf.cs" />
     <Compile Include="Composite\Static.cs" />
-    <Compile Include="Entities\Bird.cs" />
-    <Compile Include="Entities\Cactus.cs" />
-    <Compile Include="Entities\Cloud.cs" />
+    <Compile Include="Entities\DynamicType\Dynamic.cs" />
+    <Compile Include="Entities\Static\Bird.cs" />
+    <Compile Include="Entities\Static\Cactus.cs" />
+    <Compile Include="Entities\Static\Cloud.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\Ground.cs" />
-    <Compile Include="Entities\TRrex.cs" />
+    <Compile Include="Entities\Static\Ground.cs" />
+    <Compile Include="Entities\DynamicType\TRrex.cs" />
+    <Compile Include="Entities\Static\Static.cs" />
     <Compile Include="Game\Score\IMediator.cs" />
     <Compile Include="Game\Score\IObserver.cs" />
     <Compile Include="Game\Score\IScore.cs" />
@@ -66,8 +68,6 @@
     <Compile Include="Input\IInputComponent.cs" />
     <Compile Include="Game\Startegy\IStrategy.cs" />
     <Compile Include="Game\Startegy\Level.cs" />
-    <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
-    <Compile Include="obj\Release\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Physics\IPhysicsComponent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -75,22 +75,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="bin\Debug\TRexRunnerGame.exe.config" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="obj\Debug\TRexRunnerGame.csproj.CoreCompileInputs.cache" />
     <None Include="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\Debug\TRexRunnerGame.exe" />
-    <Content Include="bin\Debug\TRexRunnerGame.pdb" />
     <Content Include="docs\ClassDiagram.jpg" />
-    <Content Include="obj\Debug\TRexRunnerGame.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\TRexRunnerGame.exe" />
-    <Content Include="obj\Debug\TRexRunnerGame.pdb" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="bin\Release\" />
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

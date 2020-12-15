@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TRexRunnerGame.Game.States;
 
-namespace TRexRunnerGame.Entities
+namespace TRexRunnerGame.Entities.Dynamic
 {
-    class TRrex : Composite.Leaf
+    class Dynamic : Entity
     {
-        private State state;
     }
 }
