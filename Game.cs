@@ -21,8 +21,19 @@ namespace TRexRunnerGame
         {
             Entity ground = new Entity();
             ground.graphics = new GroundGraphics();
-            
             AddControl(ground);
+            Entity trex = new Entity();
+            trex.graphics = new TRexGraphics();
+            AddControl(trex);
+            Entity lc = new Entity();
+            lc.graphics = new LittleCactusGraphics();
+            AddControl(lc);
+            Entity bc = new Entity();
+            bc.graphics = new LargeCactusGraphics();
+            AddControl(bc);
+            Entity score = new Entity();
+            score.graphics = new ScoreGraphics();
+            AddControl(score);
             this.ResumeLayout(false);
             this.PerformLayout();
             Text = "TRex Game";
