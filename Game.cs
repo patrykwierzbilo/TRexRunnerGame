@@ -94,15 +94,74 @@ namespace TRexRunnerGame
 
         private void GameTimerEvent(object sender, EventArgs e)
         {
+            this.Controls["trex"].Top += jumpSpeed;
+            this.Controls["scoreText"].Text = "Score: " + score;
 
+            if (jumping == true && force < 0)
+            {
+                jumping = false;
+            }
+
+            if (jumping == true)
+            {
+                jumpSpeed = -12;
+                force -= 1;
+            }
+            else
+            {
+                jumpSpeed = 12;
+            }
+
+            if (this.Controls["trex"].Top > 344 && jumping == false)
+            {
+                force = 12;
+                this.Controls["trex"].Top = 345;
+                jumpSpeed = 0;
+            }
+            foreach (Control x in this.Controls)
+            {
+                if (x is PictureBox && x.Name.EndsWith("Cactus"))
+                {
+                    x.Left -= obstacleSpeed;
+                    if (x.Left /*+ x.Width*/ < -120)
+                    {
+                        x.Left = this.ClientSize.Width + rand.Next(200, 500);
+                        score++;
+                    }
+                    if (this.Controls["trex"].Bounds.IntersectsWith(x.Bounds))
+                    {
+                        gameTimer.Stop();
+                        //TODO with state pattern
+                        //this.Controls["trex"].Image = Properties.Resource.dead;
+                        this.Controls["scoreText"].Text += " Press R to restart the game!";
+                        isGameOver = true;
+                    }
+                }
+            }
+
+            if (score > 10)
+            {
+                obstacleSpeed = 15;
+            }
         }
         private void keyIsDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Space && jumping == false)
+            {
+                jumping = true;
+            }
         }
         private void keyIsUp(object sender, KeyEventArgs e)
         {
+            if (jumping == true)
+            {
+                jumping = false;
+            }
 
+            if (e.KeyCode == Keys.R && isGameOver == true)
+            {
+                GameReset();
+            }
         }
         void AddControl(Entity entity)
         {
