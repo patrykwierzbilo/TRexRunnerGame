@@ -37,14 +37,14 @@ namespace TRexRunnerGame
             Graphics g = new Graphics();
             g.control = builder.GetProduct();
             Entity trex = new Entity();
-            trex.graphics = (IGraphics)g;
+            trex.graphics = (IGraphics) g;
             AddControl(trex);
 
             director.BuildGround();
             //g = new Graphics();
             g.control = builder.GetProduct();
             Entity ground = new Entity();
-            ground.graphics = (IGraphics)g;
+            ground.graphics = (IGraphics) g;
             AddControl(ground);
 
 
@@ -52,20 +52,20 @@ namespace TRexRunnerGame
             //g = new Graphics();
             g.control = builder.GetProduct();
             Entity lc = new Entity();
-            lc.graphics = (IGraphics)g;
+            lc.graphics = (IGraphics) g;
             AddControl(lc);
 
             director.BuildLargeCactus();
             //g = new Graphics();
             g.control = builder.GetProduct();
             Entity bc = new Entity();
-            bc.graphics = (IGraphics)g;
+            bc.graphics = (IGraphics) g;
             AddControl(bc);
-            //Entity score = new Entity();
-            //score.graphics = new ScoreGraphics();
-            //AddControl(score);
-            //timer
 
+            //score
+            this.Controls.Add((Control) new ScoreGraphics().GetControl());
+
+            //timer
             gameTimer = new Timer();
             gameTimer.Interval = 20;
             gameTimer.Tick += new System.EventHandler(this.GameTimerEvent);
