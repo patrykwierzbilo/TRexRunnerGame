@@ -28,38 +28,44 @@ namespace TRexRunnerGame
         private void InitComponents()
         {
             this.SuspendLayout();//prob out
-            Entity ground = new Entity();
-            ground.graphics = new GroundGraphics();
-            AddControl(ground);
 
-            Entity trex = new Entity();
-            //trex.graphics = new TRexGraphics();
-            //AddControl(trex);
-            
             var director = new Director();
             var builder = new GraphicsBuilder();
             director.Builder = builder;
+
             director.BuildTRex();
             Graphics g = new Graphics();
             g.control = builder.GetProduct();
+            Entity trex = new Entity();
             trex.graphics = (IGraphics)g;
             AddControl(trex);
 
+            director.BuildGround();
+            //g = new Graphics();
+            g.control = builder.GetProduct();
+            Entity ground = new Entity();
+            ground.graphics = (IGraphics)g;
+            AddControl(ground);
+
+
+            director.BuildLittleCactus();
+            //g = new Graphics();
+            g.control = builder.GetProduct();
             Entity lc = new Entity();
-            lc.graphics = new LittleCactusGraphics();
+            lc.graphics = (IGraphics)g;
             AddControl(lc);
+
+            director.BuildLargeCactus();
+            //g = new Graphics();
+            g.control = builder.GetProduct();
             Entity bc = new Entity();
-            bc.graphics = new LargeCactusGraphics();
+            bc.graphics = (IGraphics)g;
             AddControl(bc);
             //Entity score = new Entity();
             //score.graphics = new ScoreGraphics();
             //AddControl(score);
             //timer
 
-            //((ISupportInitialize)(ground.graphics.GetControl())).BeginInit();
-            //((ISupportInitialize)(bc.graphics.GetControl())).BeginInit();
-            //((ISupportInitialize)(lc.graphics.GetControl())).BeginInit();
-            //((ISupportInitialize)(trex.graphics.GetControl())).BeginInit();
             gameTimer = new Timer();
             gameTimer.Interval = 20;
             gameTimer.Tick += new System.EventHandler(this.GameTimerEvent);
