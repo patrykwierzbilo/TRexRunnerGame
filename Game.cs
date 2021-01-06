@@ -9,12 +9,12 @@ namespace TRexRunnerGame
     class Game : Form
     {
         private IContainer components = null;
-        List<Object> entities = new List<object>();
         Timer gameTimer;
+        ILevelStrategy level;
+        Score score;
         bool jumping = false;
         int jumpSpeed = 10;
         int force = 12;
-        int score = 0;
         int obstacleSpeed = 10;
         Random rand = new Random();
         int position;
@@ -41,7 +41,6 @@ namespace TRexRunnerGame
             AddControl(trex);
 
             director.BuildGround();
-            //g = new Graphics();
             g.control = builder.GetProduct();
             Entity ground = new Entity();
             ground.graphics = (IGraphics) g;
@@ -49,14 +48,12 @@ namespace TRexRunnerGame
 
 
             director.BuildLittleCactus();
-            //g = new Graphics();
             g.control = builder.GetProduct();
             Entity lc = new Entity();
             lc.graphics = (IGraphics) g;
             AddControl(lc);
 
             director.BuildLargeCactus();
-            //g = new Graphics();
             g.control = builder.GetProduct();
             Entity bc = new Entity();
             bc.graphics = (IGraphics) g;
@@ -87,7 +84,7 @@ namespace TRexRunnerGame
             force = 12;
             jumpSpeed = 0;
             jumping = false;
-            score = 0;
+            score = new Score(this);
             obstacleSpeed = 10;
             //scoreText.Text = "Score: " + score;
             //trex.Image = Properties.Resources.running;
@@ -102,7 +99,7 @@ namespace TRexRunnerGame
                     x.Left = position;
                 }
             }
-
+            //level = new FirstLevel(this);
             gameTimer.Start();
         }
 
@@ -141,7 +138,7 @@ namespace TRexRunnerGame
                     if (x.Left /*+ x.Width*/ < -120)
                     {
                         x.Left = this.ClientSize.Width + rand.Next(200, 500);
-                        score++;
+                        score.Increment();
                     }
 
                     if (this.Controls["trex"].Bounds.IntersectsWith(x.Bounds))
@@ -154,11 +151,8 @@ namespace TRexRunnerGame
                     }
                 }
             }
-
-            if (score > 10)
-            {
-                obstacleSpeed = 15;
-            }
+            if(level != null)
+            level.IncreaseDifficultyLevel();
         }
         private void keyIsDown(object sender, KeyEventArgs e)
         {
@@ -189,6 +183,19 @@ namespace TRexRunnerGame
         {
             Application.EnableVisualStyles();
             Application.Run(new Game());
+        }
+
+        public void IncreaseObstacleSpeed()
+        {
+            obstacleSpeed = 15;
+        }
+        public void IncreaseMaxObstacleSpeed()
+        {
+            obstacleSpeed = 20;
+        }
+        public void SetLevel(ILevelStrategy level)
+        {
+            this.level = level;
         }
     }
 }

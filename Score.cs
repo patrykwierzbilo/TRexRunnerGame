@@ -6,15 +6,29 @@ using System.Threading.Tasks;
 
 namespace TRexRunnerGame
 {
-    class Score : Entity
+    class Score
     {
         int score;
+        IMediator mediator;
 
-        public Score()
+        public Score(Game game)
         {
             score = 0;
+            mediator = new LevelMediator(game);
         }
 
+        public void Increment()
+        {
+            score++;
+            if (score > 3)
+            {
+                mediator.Notify(this, "First");
+            }
+            if (score > 8)
+            {
+                mediator.Notify(this, "Second");
+            }
+        }
 
     }
 }
