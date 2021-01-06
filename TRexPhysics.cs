@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace TRexRunnerGame
 {
-    interface IPhysics
+    class TRexPhysics : IPhysics
     {
-        void Update(IGraphics graphics);
+        public void Update(IGraphics graphics)
+        {
+            
+        }
     }
 }

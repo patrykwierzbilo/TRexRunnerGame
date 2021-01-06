@@ -9,16 +9,25 @@ namespace TRexRunnerGame
 {
     class GroundGraphics : IGraphics
     {
-        public Control GetControl()
+        PictureBox ground;
+        public GroundGraphics()
         {
-            PictureBox ground = new PictureBox();
+            ground = new PictureBox();
             ground.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             ground.Location = new System.Drawing.Point(0, 388);
             ground.Name = "Ground";
             ground.Size = new System.Drawing.Size(807, 63);
             ground.TabIndex = 0;
             ground.TabStop = false;
+        }
+        public PictureBox GetControl()
+        {
             return ground;
+        }
+
+        public void SetControl(PictureBox pictureBox)
+        {
+            ground = pictureBox;
         }
     }
 }

@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TRexRunnerGame
@@ -34,18 +31,29 @@ namespace TRexRunnerGame
             Entity ground = new Entity();
             ground.graphics = new GroundGraphics();
             AddControl(ground);
+
             Entity trex = new Entity();
-            trex.graphics = new TRexGraphics();
+            //trex.graphics = new TRexGraphics();
+            //AddControl(trex);
+            
+            var director = new Director();
+            var builder = new GraphicsBuilder();
+            director.Builder = builder;
+            director.BuildTRex();
+            Graphics g = new Graphics();
+            g.control = builder.GetProduct();
+            trex.graphics = (IGraphics)g;
             AddControl(trex);
+
             Entity lc = new Entity();
             lc.graphics = new LittleCactusGraphics();
             AddControl(lc);
             Entity bc = new Entity();
             bc.graphics = new LargeCactusGraphics();
             AddControl(bc);
-            Entity score = new Entity();
-            score.graphics = new ScoreGraphics();
-            AddControl(score);
+            //Entity score = new Entity();
+            //score.graphics = new ScoreGraphics();
+            //AddControl(score);
             //timer
 
             //((ISupportInitialize)(ground.graphics.GetControl())).BeginInit();
@@ -56,8 +64,8 @@ namespace TRexRunnerGame
             gameTimer.Interval = 20;
             gameTimer.Tick += new System.EventHandler(this.GameTimerEvent);
 
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.keyIsDown);
-            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.keyIsUp);
+            this.KeyDown += new KeyEventHandler(this.keyIsDown);
+            this.KeyUp += new KeyEventHandler(this.keyIsUp);
             
             this.SuspendLayout();//need check
 
@@ -95,7 +103,7 @@ namespace TRexRunnerGame
         private void GameTimerEvent(object sender, EventArgs e)
         {
             this.Controls["trex"].Top += jumpSpeed;
-            this.Controls["scoreText"].Text = "Score: " + score;
+            //this.Controls["scoreText"].Text = "Score: " + score;
 
             if (jumping == true && force < 0)
             {
@@ -118,6 +126,7 @@ namespace TRexRunnerGame
                 this.Controls["trex"].Top = 345;
                 jumpSpeed = 0;
             }
+
             foreach (Control x in this.Controls)
             {
                 if (x is PictureBox && x.Name.EndsWith("Cactus"))
@@ -128,12 +137,13 @@ namespace TRexRunnerGame
                         x.Left = this.ClientSize.Width + rand.Next(200, 500);
                         score++;
                     }
+
                     if (this.Controls["trex"].Bounds.IntersectsWith(x.Bounds))
                     {
                         gameTimer.Stop();
                         //TODO with state pattern
                         //this.Controls["trex"].Image = Properties.Resource.dead;
-                        this.Controls["scoreText"].Text += " Press R to restart the game!";
+                        //this.Controls["scoreText"].Text += " Press R to restart the game!";
                         isGameOver = true;
                     }
                 }

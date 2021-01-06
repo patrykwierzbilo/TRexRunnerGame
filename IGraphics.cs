@@ -9,6 +9,7 @@ namespace TRexRunnerGame
 {
     interface IGraphics
     {
-        Control GetControl();
+        PictureBox GetControl();
+        void SetControl(PictureBox pictureBox);
     }
 }

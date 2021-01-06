@@ -18,5 +18,10 @@ namespace TRexRunnerGame
         {
             return graphics.GetControl();
         }
+
+        void Update()
+        {
+            physics.Update(graphics);
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace TRexRunnerGame
 {
     class TRex : Entity
     {
+
         private TRex() { }
         private static TRex _instance;
         public static TRex GetInstance()

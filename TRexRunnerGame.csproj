@@ -48,9 +48,13 @@
     <Compile Include="Bird.cs" />
     <Compile Include="Cactus.cs" />
     <Compile Include="Cloud.cs" />
+    <Compile Include="Director.cs" />
     <Compile Include="Entity.cs" />
+    <Compile Include="Graphics.cs" />
+    <Compile Include="GraphicsBuilder.cs" />
     <Compile Include="Ground.cs" />
     <Compile Include="GroundGraphics.cs" />
+    <Compile Include="IGraphicsBuilder.cs" />
     <Compile Include="IGraphics.cs" />
     <Compile Include="IPhysics.cs" />
     <Compile Include="Game.cs">
@@ -68,6 +72,7 @@
     <Compile Include="ScoreGraphics.cs" />
     <Compile Include="TRex.cs" />
     <Compile Include="TRexGraphics.cs" />
+    <Compile Include="TRexPhysics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

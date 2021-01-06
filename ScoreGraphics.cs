@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace TRexRunnerGame
 {
-    class ScoreGraphics : IGraphics
+    class ScoreGraphics
     {
         Label scoreText;
         public ScoreGraphics()
@@ -23,9 +23,14 @@ namespace TRexRunnerGame
             scoreText.Text = "Score: 0";
         }
 
-        public Control GetControl()
+        public Label GetControl()
         {
             return scoreText;
+        }
+
+        public void SetControl(Label pictureBox)
+        {
+            scoreText = pictureBox;
         }
     }
 }

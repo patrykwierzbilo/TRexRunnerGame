@@ -21,9 +21,14 @@ namespace TRexRunnerGame
             littleCactus.TabIndex = 1;
             littleCactus.TabStop = false;
         }
-        public Control GetControl()
+        public PictureBox GetControl()
         {
             return littleCactus;
+        }
+
+        public void SetControl(PictureBox pictureBox)
+        {
+            littleCactus = pictureBox;
         }
     }
 }

@@ -9,17 +9,27 @@ namespace TRexRunnerGame
 {
     class TRexGraphics : IGraphics
     {
-        public Control GetControl()
+        PictureBox trex;
+        public TRexGraphics()
         {
-            PictureBox trex = new PictureBox();
-            trex.Image = TRexRunnerGame.Properties.Resource.running;
+            trex = new PictureBox();
+            trex.Image = Properties.Resource.running;
             trex.Location = new System.Drawing.Point(60, 345);//prob 344
             trex.Name = "trex";
             trex.Size = new System.Drawing.Size(40, 43);
             trex.SizeMode = PictureBoxSizeMode.AutoSize;
             trex.TabIndex = 6;
             trex.TabStop = false;
+        }
+
+        public PictureBox GetControl()
+        {
             return trex;
+        }
+
+        public void SetControl(PictureBox pictureBox)
+        {
+            trex = pictureBox;
         }
     }
 }
