@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace TRexRunnerGame
 {
-    class Game : Form
+    class Game
     {
         Timer gameTimer;
         ILevelStrategy level;
@@ -17,6 +17,8 @@ namespace TRexRunnerGame
         Entity ground;
         Entity littleCactus;
         Entity largeCactus;
+        public int viewWidthSize;
+        public IView view = new View();
 
         public Game()
         {
@@ -26,63 +28,56 @@ namespace TRexRunnerGame
 
         private void InitComponents()
         {
-            this.SuspendLayout();//prob out
-
             var director = new Director();
             var builder = new GraphicsBuilder();
             director.Builder = builder;
+            PhysicsFactory physicsFactory = new PhysicsFactory();
 
             director.BuildTRex();
             Graphics g = new Graphics();
             g.control = builder.GetProduct();
             trex = TRex.GetInstance();
             trex.graphics = g;
-            trex.physics = new TRexPhysics();
-            AddControl(trex);
+            trex.physics = physicsFactory.CreatePhysics("trex", trex.graphics, this);
+            view.AddControl(trex);
 
             director.BuildGround();
             g = new Graphics();
             g.control = builder.GetProduct();
             ground = new Entity();
             ground.graphics = g;
-            AddControl(ground);
-
+            view.AddControl(ground);
 
             director.BuildLittleCactus();
             g = new Graphics();
             g.control = builder.GetProduct();
             littleCactus = new Entity();
             littleCactus.graphics = g;
-            littleCactus.physics = new ObstaclePhysics(littleCactus.graphics, this);
-            AddControl(littleCactus);
+            littleCactus.physics = physicsFactory.CreatePhysics("obstacle", littleCactus.graphics, this);
+            view.AddControl(littleCactus);
 
             director.BuildLargeCactus();
             g = new Graphics();
             g.control = builder.GetProduct();
             largeCactus = new Entity();
             largeCactus.graphics = g;
-            largeCactus.physics = new ObstaclePhysics(largeCactus.graphics, this);
-            AddControl(largeCactus);
+            largeCactus.physics = physicsFactory.CreatePhysics("obstacle", largeCactus.graphics, this);
+            view.AddControl(largeCactus);
 
             //score
             scoreGraphics = new ScoreGraphics();
-            this.Controls.Add((Control)scoreGraphics.GetControl());
+            view.AddControl(scoreGraphics.GetControl());
 
             //timer
             gameTimer = new Timer();
             gameTimer.Interval = 20;
-            gameTimer.Tick += new System.EventHandler(this.GameTimerEvent);
+            gameTimer.Tick += new EventHandler(this.GameTimerEvent);
 
-            this.KeyDown += new KeyEventHandler(this.keyIsDown);
-            this.KeyUp += new KeyEventHandler(this.keyIsUp);
-            
-            this.SuspendLayout();//need check
-
-            this.ResumeLayout(false);
-            this.PerformLayout();
-            Text = "TRex Game";
-            ClientSize = new Size(800, 450);
-            CenterToScreen();
+            view.AddKeyDown(new KeyEventHandler(this.keyIsDown));
+            view.AddKeyUp(new KeyEventHandler(this.keyIsUp));
+            view.SetText("TRex Game");
+            viewWidthSize = 800;
+            view.SetClientSize(new Size(800, 450));
         }
 
         private void GameReset()
@@ -96,7 +91,6 @@ namespace TRexRunnerGame
             littleCactus.physics = new ObstaclePhysics(littleCactus.graphics, this);
             largeCactus.physics = new ObstaclePhysics(largeCactus.graphics, this);
 
-            //level = new FirstLevel(this);
             gameTimer.Start();
         }
 
@@ -130,29 +124,16 @@ namespace TRexRunnerGame
                 GameReset();
             }
         }
-        void AddControl(Entity entity)
-        {
-            this.Controls.Add((Control)entity.graphics.GetControl());
-        }
-
-        [STAThread]
-        static void Main()
-        {
-            Application.EnableVisualStyles();
-            Application.Run(new Game());
-        }
-
+        
         public void IncreaseObstacleSpeed()
         {
             littleCactus.physics.SetSpeed(15);
             largeCactus.physics.SetSpeed(15);
-            //obstacleSpeed = 15;
         }
         public void IncreaseMaxObstacleSpeed()
         {
             littleCactus.physics.SetSpeed(20);
             largeCactus.physics.SetSpeed(20);
-            //obstacleSpeed = 20;
         }
         public void SetLevel(ILevelStrategy level)
         {
@@ -169,8 +150,6 @@ namespace TRexRunnerGame
         {
             gameTimer.Stop();
             trex.TransitionTo(new DeathState());
-            //TODO with state pattern
-            //this.Controls["trex"].Image = Properties.Resource.dead;
             scoreGraphics.GetControl().Text += " Press R to restart the game!";
             isGameOver = true;
         }
