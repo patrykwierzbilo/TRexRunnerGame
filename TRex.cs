@@ -8,6 +8,7 @@ namespace TRexRunnerGame
 {
     class TRex : Entity
     {
+        State state;
 
         private TRex() { }
         private static TRex _instance;
@@ -18,6 +19,13 @@ namespace TRexRunnerGame
                 _instance = new TRex();
             }
             return _instance;
+        }
+
+        public void TransitionTo(State state)
+        {
+            this.state = state;
+            this.state.SetContext(this);
+            state.Handle();
         }
     }
 }

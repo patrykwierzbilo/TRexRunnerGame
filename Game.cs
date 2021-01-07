@@ -8,17 +8,16 @@ namespace TRexRunnerGame
 {
     class Game : Form
     {
-        private IContainer components = null;
         Timer gameTimer;
         ILevelStrategy level;
         Score score;
-        bool jumping = false;
-        int jumpSpeed = 10;
-        int force = 12;
-        int obstacleSpeed = 10;
-        Random rand = new Random();
-        int position;
+        ScoreGraphics scoreGraphics;
         bool isGameOver = false;
+        TRex trex;
+        Entity ground;
+        Entity littleCactus;
+        Entity largeCactus;
+
         public Game()
         {
             InitComponents();
@@ -36,31 +35,38 @@ namespace TRexRunnerGame
             director.BuildTRex();
             Graphics g = new Graphics();
             g.control = builder.GetProduct();
-            Entity trex = new Entity();
-            trex.graphics = (IGraphics) g;
+            trex = TRex.GetInstance();
+            trex.graphics = g;
+            trex.physics = new TRexPhysics();
             AddControl(trex);
 
             director.BuildGround();
+            g = new Graphics();
             g.control = builder.GetProduct();
-            Entity ground = new Entity();
-            ground.graphics = (IGraphics) g;
+            ground = new Entity();
+            ground.graphics = g;
             AddControl(ground);
 
 
             director.BuildLittleCactus();
+            g = new Graphics();
             g.control = builder.GetProduct();
-            Entity lc = new Entity();
-            lc.graphics = (IGraphics) g;
-            AddControl(lc);
+            littleCactus = new Entity();
+            littleCactus.graphics = g;
+            littleCactus.physics = new ObstaclePhysics(littleCactus.graphics, this);
+            AddControl(littleCactus);
 
             director.BuildLargeCactus();
+            g = new Graphics();
             g.control = builder.GetProduct();
-            Entity bc = new Entity();
-            bc.graphics = (IGraphics) g;
-            AddControl(bc);
+            largeCactus = new Entity();
+            largeCactus.graphics = g;
+            largeCactus.physics = new ObstaclePhysics(largeCactus.graphics, this);
+            AddControl(largeCactus);
 
             //score
-            this.Controls.Add((Control) new ScoreGraphics().GetControl());
+            scoreGraphics = new ScoreGraphics();
+            this.Controls.Add((Control)scoreGraphics.GetControl());
 
             //timer
             gameTimer = new Timer();
@@ -81,91 +87,42 @@ namespace TRexRunnerGame
 
         private void GameReset()
         {
-            force = 12;
-            jumpSpeed = 0;
-            jumping = false;
             score = new Score(this);
-            obstacleSpeed = 10;
-            //scoreText.Text = "Score: " + score;
-            //trex.Image = Properties.Resources.running;
+            scoreGraphics.GetControl().Text = "Score: " + score.GetScore();
             isGameOver = false;
-            //trex.Top = 272;//Ground.Top - trex.Height;
-            
-            foreach (Control x in this.Controls)
-            {
-                if (x is PictureBox && x.Name.EndsWith("Cactus"))
-                {
-                    position = this.ClientSize.Width + rand.Next(300, 600) + (x.Width * 10);
-                    x.Left = position;
-                }
-            }
+
+            trex.TransitionTo(new RunningState());
+            trex.physics = new TRexPhysics();
+            littleCactus.physics = new ObstaclePhysics(littleCactus.graphics, this);
+            largeCactus.physics = new ObstaclePhysics(largeCactus.graphics, this);
+
             //level = new FirstLevel(this);
             gameTimer.Start();
         }
 
         private void GameTimerEvent(object sender, EventArgs e)
         {
-            this.Controls["trex"].Top += jumpSpeed;
-            //this.Controls["scoreText"].Text = "Score: " + score;
+            trex.physics.Update(trex.graphics);
+            littleCactus.physics.Update(littleCactus.graphics);
+            largeCactus.physics.Update(largeCactus.graphics);
 
-            if (jumping == true && force < 0)
+            if (level != null)
             {
-                jumping = false;
+                level.IncreaseDifficultyLevel();
             }
-
-            if (jumping == true)
-            {
-                jumpSpeed = -12;
-                force -= 1;
-            }
-            else
-            {
-                jumpSpeed = 12;
-            }
-
-            if (this.Controls["trex"].Top > 344 && jumping == false)
-            {
-                force = 12;
-                this.Controls["trex"].Top = 345;
-                jumpSpeed = 0;
-            }
-
-            foreach (Control x in this.Controls)
-            {
-                if (x is PictureBox && x.Name.EndsWith("Cactus"))
-                {
-                    x.Left -= obstacleSpeed;
-                    if (x.Left /*+ x.Width*/ < -120)
-                    {
-                        x.Left = this.ClientSize.Width + rand.Next(200, 500);
-                        score.Increment();
-                    }
-
-                    if (this.Controls["trex"].Bounds.IntersectsWith(x.Bounds))
-                    {
-                        gameTimer.Stop();
-                        //TODO with state pattern
-                        //this.Controls["trex"].Image = Properties.Resource.dead;
-                        //this.Controls["scoreText"].Text += " Press R to restart the game!";
-                        isGameOver = true;
-                    }
-                }
-            }
-            if(level != null)
-            level.IncreaseDifficultyLevel();
         }
         private void keyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Space && jumping == false)
+            if (e.KeyCode == Keys.Space && trex.physics.GetJumping() == false)
             {
-                jumping = true;
+                trex.physics.SetJumping(true);
             }
         }
         private void keyIsUp(object sender, KeyEventArgs e)
         {
-            if (jumping == true)
+            if (trex.physics.GetJumping() == true)
             {
-                jumping = false;
+                trex.physics.SetJumping(false);
             }
 
             if (e.KeyCode == Keys.R && isGameOver == true)
@@ -187,15 +144,35 @@ namespace TRexRunnerGame
 
         public void IncreaseObstacleSpeed()
         {
-            obstacleSpeed = 15;
+            littleCactus.physics.SetSpeed(15);
+            largeCactus.physics.SetSpeed(15);
+            //obstacleSpeed = 15;
         }
         public void IncreaseMaxObstacleSpeed()
         {
-            obstacleSpeed = 20;
+            littleCactus.physics.SetSpeed(20);
+            largeCactus.physics.SetSpeed(20);
+            //obstacleSpeed = 20;
         }
         public void SetLevel(ILevelStrategy level)
         {
             this.level = level;
+        }
+
+        public void IncrementScore()
+        {
+            score.Increment();
+            scoreGraphics.GetControl().Text = "Score: " + score.GetScore();
+        }
+
+        public void StopGame()
+        {
+            gameTimer.Stop();
+            trex.TransitionTo(new DeathState());
+            //TODO with state pattern
+            //this.Controls["trex"].Image = Properties.Resource.dead;
+            scoreGraphics.GetControl().Text += " Press R to restart the game!";
+            isGameOver = true;
         }
     }
 }

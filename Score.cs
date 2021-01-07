@@ -30,5 +30,10 @@ namespace TRexRunnerGame
             }
         }
 
+        public int GetScore()
+        {
+            return score;
+        }
+
     }
 }

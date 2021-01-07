@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace TRexRunnerGame
 {
-    interface IPhysics
+    class DeathState : State
     {
-        void Update(IGraphics graphics);
-        void SetJumping(bool val);
-        bool GetJumping();
-        void SetSpeed(int speed);
+        public override void Handle()
+        {
+            trex.graphics.GetControl().Image = Properties.Resource.dead;
+        }
     }
 }
