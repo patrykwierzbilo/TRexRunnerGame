@@ -7,8 +7,6 @@ using System.Windows.Forms;
 
 namespace TRexRunnerGame
 {
-    //dodac przy budowie(builder) entity beginInit i endInit
-    //((ISupportInitialize)(ground.graphics.GetControl())).BeginInit();
     class Entity
     {
         public IGraphics graphics;
